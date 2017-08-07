@@ -1,0 +1,24 @@
+<section class="main-header">
+  <p class="flash"><%= notice %><%= alert %></p>
+</section>
+
+<p><%= notice %></p><br>
+<% @response.split(",").each do |id| %>
+<div style="display:inline;">
+  <%= hidden_field_tag @picture_owner_id = Picture.find(id).user_id %><BR>
+
+  作者： <%= @picture_owner_name = User.find(@picture_owner_id).name %>
+
+  <% if current_user.id == @picture_owner_id %>
+  
+    <td><%= link_to '削除', deatroy_pictures_path(id), method: :delete, data: { confirm: '本当に削除して宜しいですか？' } %></td>
+    <%# <td><%= link_to '編集', edit_picture_path(id) %></td>
+  <% end %>
+  
+  <div class="panel">
+  <img src="/images/<%=id%>.png" style="border:solid black 1px;"></img>
+  </div>
+</div>
+
+<% end %>
+
