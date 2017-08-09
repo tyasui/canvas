@@ -11,7 +11,6 @@ $ ->
       @lineWidth = 10
       @prevPos = {x:0, y:0}
       @mouse_down = false
-      @touch_start = false
       @historyData = [@ctx.getImageData(0, 0, @canvas.width, @canvas.height)]
       @historyIdx = @historyData.length - 1
       @color = '#000000'
@@ -19,11 +18,6 @@ $ ->
     setMouseState:  (flag) ->
       @addHistory() if @mouse_down is true and flag is false
       @mouse_down = flag
-      
-    setTouchState:  (flag) ->
-      @addHistory() if @touch_start is true and flag is false
-      @touch_start = flag
-
     setLineWidth: (val) -> @lineWidth = val
     getLineWidth: -> @lineWidth
     setColor: (@color) ->
@@ -72,23 +66,8 @@ $ ->
       @prevPos = @getPointPosition(e)
       @putPoint(@prevPos)
 
-    touchstart: (e) ->
-      e.preventDefault();
-      thisX = e.pageX || e.originalEvent.changedTouches[0].pageX;
-      thisY = e.pageY || e.originalEvent.changedTouches[0].pageY;
-      @touch_start = true
-      @prevPos = @getPointPosition(e)
-      @putPoint(@prevPos)
-
     mousemove: (e) ->
       return unless @mouse_down
-      curPos = @getPointPosition(e)
-      @drawLine(@prevPos, curPos)
-      @putPoint(curPos)
-      @prevPos = {x:curPos.x, y:curPos.y}
-
-   touchmove: (e) ->
-      return unless @touch_start
       curPos = @getPointPosition(e)
       @drawLine(@prevPos, curPos)
       @putPoint(curPos)
@@ -175,7 +154,11 @@ $ ->
   # ====================================
   # 保存した画像の一覧を表示
   listPictures = (myCanvas) ->
-
+      #$.get '/pictures/list.txt', (result)->
+        # console.log result
+        ids = result.split(',')
+        pictures = $("#pictures")
+        pictures.empty()
         ids.forEach (id, i) ->
           pictures.append("<img src=\"/images/#{id}.png\" class=\"pict_thumbnail\" />") if parseInt(id, 10) > 0
 
@@ -187,11 +170,6 @@ $ ->
 
         thumb_pics.mouseenter -> $(@).addClass('pict_thumbnail-over')
         thumb_pics.mouseout   -> $(@).removeClass('pict_thumbnail-over')
-
-        thumb_pics.touchenter -> $(@).addClass('pict_thumbnail-over')
-        thumb_pics.touchout   -> $(@).removeClass('pict_thumbnail-over')
-        
-        
         null
 
   # ====================================
@@ -204,12 +182,6 @@ $ ->
     $(canvas).mousemove (e) -> myCanvas.mousemove(e)
     $(canvas).mouseup   (e) -> myCanvas.setMouseState(false)
     $(canvas).mouseout  (e) -> myCanvas.setMouseState(false)
-
-    $(canvas).touchstart (e) -> myCanvas.touchstart(e)
-    $(canvas).touchmove (e) -> myCanvas.touchmove(e)
-    $(canvas).touchend   (e) -> myCanvas.setTouchState(false)
-    $(canvas).touchend  (e) -> myCanvas.setTouchState(false)
-
 
     # 線の太さ
     $("#show-pen-width").text(myCanvas.getLineWidth())
