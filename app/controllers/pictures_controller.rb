@@ -51,7 +51,7 @@ class PicturesController < ApplicationController
     render nothing: true
   end
 
-  def index
+  def list
 
     @pictures = Picture.all.order(created_at: :desc)
     @users = User.all
@@ -76,7 +76,7 @@ class PicturesController < ApplicationController
 #
 
     @pict.destroy
-    redirect_to pictures_path, notice: "絵を削除しました！"
+    redirect_to pictures_list_path, notice: "絵を削除しました！"
 
   end
 end

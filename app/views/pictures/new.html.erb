@@ -10,7 +10,7 @@
     <button id="undo-button" class="btn">Undo</button>
     <button id="redo-button" class="btn">Redo</button>
     <button id="save-button" class="btn">保存</button>
-    <button id="download-button" class="btn">Download</button>
+    <button id="download-button" class="btn">ダウンロード</button>
   </div>
 
   <div class="panel">
@@ -32,10 +32,12 @@
       <input id="upload" name="upload" type="file" value="File Upload">
       <p>
       (デスクトップから画像を drop でも可能)<br><br>
-      <%= link_to "今までの絵を見る", pictures_path %>
+      <%= link_to "今までの絵を見る", pictures_list_path %>
       </p>
     </div>
   </div>
 </div>
 
 <div class="clearfix"></div>
+
+<div id="pictures"></div>

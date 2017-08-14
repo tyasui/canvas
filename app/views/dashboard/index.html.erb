@@ -1,0 +1,17 @@
+<section class="main-header">
+  <p class="flash"><%= notice %><%= alert %></p>
+</section>
+
+<p><%= notice %></p><br>
+
+<div style="display:inline;">
+  <% if user_signed_in? %>
+
+<% else %>
+  <%= link_to 'ログイン', new_user_session_path  %>
+<BR>
+<BR>
+  <%= link_to 'サインアップ(はじめての人はこちら)', new_user_registration_path %>
+<% end %>
+
+</div>
